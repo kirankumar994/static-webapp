@@ -1,17 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles.css">
-  <title>Vanilla JavaScript App</title>
+    <title>Signup Form</title>
+    <script src="https://www.google.com/recaptcha/api.js?render=6LcKbj0pAAAAAMKzpGn4X2bxrznoyJayefFVYESB"></script>
+    <script>
+        function onSubmit(event) {
+            event.preventDefault(); // Prevent form from submitting
+            console.log("Form submission triggered...");
+            grecaptcha.ready(function () {
+                grecaptcha.execute('6LcKbj0pAAAAAMKzpGn4X2bxrznoyJayefFVYESB', { action: 'submit' }).then(function (token) {
+                    // Add the token to the form
+                    console.log("Generated token:", token);
+                    document.getElementById('recaptchaToken').value = token;
+                    // Now submit the form
+                    //document.getElementById('signupForm').submit();
+                }).catch(function (error) {
+                    console.error("Error generating token:", error);
+                });
+            });
+        }
+    </script>
 </head>
 
 <body>
-  <main>
-    <h1>Vanilla JavaScript App</h1>
-  </main>
+    <h2>Signup Form</h2>
+    <form id="signupForm" method="post" onsubmit="onSubmit(event)">
+        <label for="email">email:</label><br>
+        <input type="email" id="email" name="email"><br><br>
+        <label for="password">password</label><br>
+        <input type="password" id="password" name="password"><br><br>
+
+        Token:<br>
+        <input id="recaptchaToken" name="recaptchaToken"> <br><br>
+        <button type="submit">login</button>
+    </form>
 </body>
 
 </html>
